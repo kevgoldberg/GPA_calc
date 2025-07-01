@@ -1,0 +1,695 @@
+/* Style the page to look clean and modern */
+/* Make the form fields and buttons styled nicely */
+/* Center the content */
+
+/* Enable dark mode styling */
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #121212;
+    color: #e0e0e0;
+    line-height: 1.5;
+}
+
+/* Navigation bar styles */
+.nav-bar {
+    background: rgba(30, 30, 30, 0.95);
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    margin-bottom: 10px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.nav-link {
+    color: #a0a0a0;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+}
+
+.nav-link:hover {
+    color: #ffffff;
+    background: linear-gradient(145deg, #2a2a2a, #333333);
+    transform: translateY(-1px);
+}
+
+.nav-link.active {
+    color: #fff;
+    background: linear-gradient(145deg, #333333, #444444);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 1.6rem;
+}
+
+form {
+    display: inline-block;
+    text-align: left;
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    margin-top: 20px;
+}
+
+input {
+    width: 90%;
+    display: block;
+    margin: 0 auto;
+    padding: 8px 10px;
+    border: 1px solid rgba(90, 90, 90, 0.3);
+    border-radius: 8px;
+    background-color: rgba(42, 42, 42, 0.7);
+    color: #e0e0e0;
+    transform-origin: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-bottom: 0;
+    font-size: 0.95rem;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+input:focus {
+    outline: none;
+    border-color: #4CAF50;
+    background-color: rgba(51, 51, 51, 0.8);
+    transform: scale(1.02);
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.25);
+}
+
+input[name="assignment-name"] {
+    width: 85%;
+}
+
+input[name="score"],
+input[name="weight"] {
+    width: 70%;
+}
+
+table {
+    width: 95%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    border-collapse: separate;
+    border-spacing: 0 6px;
+    margin-bottom: -10px;
+    background: transparent;
+    color: #e0e0e0;
+    table-layout: fixed;
+}
+
+table th {
+    background: transparent;
+    color: #a0a0a0;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 6px 15px 10px 15px;
+    border: none;
+    font-weight: 600;
+    text-align: center;
+    width: calc(100% / 3); /* Ensure equal width distribution */
+}
+
+table td {
+    padding: 4px 16px;
+    border: none;
+    background: rgba(42, 42, 42, 0.6);
+    text-align: center;
+    width: calc(100% / 3); /* Ensure equal width distribution */
+    position: relative;
+}
+
+table th:first-child,
+table td:first-child {
+    width: 50%;
+}
+
+table th:not(:first-child),
+table td:not(:first-child) {
+    width: 25%;
+}
+
+table tr td {
+    border-right: 1px solid #333;
+}
+
+table tr td:first-child {
+    padding-left: 25px;  /* Add space for delete button */
+}
+
+table tr td:last-child {
+    border-right: none;
+}
+
+table tr:first-child td:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    overflow: visible;  /* Allow delete button to overflow */
+}
+
+table tr:first-child td:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+table tbody tr {
+    transition: transform 0.2s ease;
+}
+
+table tbody tr:hover {
+    transform: translateY(-1px);
+}
+
+.table-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    margin: 10px auto;
+    background: linear-gradient(145deg, #1d1d1d, #252525);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    padding: 15px;
+    padding-left: 40px; /* Make space for delete buttons */
+    max-width: 650px;
+}
+
+/* Add row button styles */
+.add-row-btn {
+    background: rgba(42, 42, 42, 0.5);
+    border: 1px dashed rgba(100, 100, 100, 0.5);
+    color: #a0a0a0;
+    padding: 10px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    margin: 12px 0 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.add-row-btn:hover {
+    background: rgba(76, 175, 80, 0.15);
+    color: #4CAF50;
+    border-color: rgba(76, 175, 80, 0.5);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+tfoot td {
+    background: transparent !important;
+    padding: 0 !important;
+    border: none !important;
+}
+
+.class-header {
+    margin-bottom: 6px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid #333;
+    position: relative;
+}
+
+.class-header h2 {
+    margin: 0;
+    color: #e0e0e0;
+    font-size: 1.3rem;
+    font-weight: 500;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+
+.current-grade {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 10px 0 0 0;
+    border-top: 1px solid #333;
+    margin-top: 10px;
+}
+
+.current-grade span {
+    font-size: 1.2rem;
+    color: #888;
+    margin-right: 15px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+
+}
+
+#final-grade {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #4CAF50;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+}
+
+.goal-input {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 0;
+}
+
+.goal-input label {
+    color: #888;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.goal-input input {
+    width: 60px;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid #333;
+    border-radius: 4px;
+    background: #2c2c2c;
+    color: #e0e0e0;
+    font-size: 1rem;
+}
+
+#grade-display {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+.grade-card {
+    background: linear-gradient(145deg, #1d1d1d, #252525);
+    padding: 15px 28px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    min-width: 250px;
+    text-align: center;
+    max-width: 650px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.grade-card:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at top right, rgba(76, 175, 80, 0.08), transparent 50%);
+    pointer-events: none;
+}
+
+.grade-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+}
+
+.grade-card h3 {
+    margin: 0 0 15px 0;
+    color: #888;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    line-height: 1.4;
+}
+
+.grade-goal-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.required-grade-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#required-grade-output {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #4CAF50;
+    min-width: 90px;
+    text-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+    transition: all 0.3s ease;
+}
+
+.delete-row {
+    position: absolute;
+    left: -22px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    background: none;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.2s ease;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+}
+
+tr {
+    position: relative;
+}
+
+tr:hover .delete-row {
+    opacity: 0.4;
+}
+
+.delete-row:hover {
+    color: #ff4d4d;
+    opacity: 1 !important;
+    transform: translateY(-50%) scale(1.2);
+}
+
+/* Semester and Class Management Styling */
+
+.semester-manager {
+    background: rgba(22, 22, 22, 0.8);
+    padding: 12px;
+    margin-bottom: 5px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.semester-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow-x: auto;
+    padding-bottom: 3px;
+}
+
+.class-manager {
+    background: rgba(30, 30, 30, 0.7);
+    padding: 12px;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.class-selector {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    max-width: 800px;
+    margin: 0 auto;
+    overflow-x: auto;
+    padding-bottom: 3px;
+}
+
+#semester-tabs, 
+#class-tabs {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.semester-tab {
+    background: linear-gradient(145deg, #222222, #282828);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    min-width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.semester-tab.active {
+    background: linear-gradient(145deg, #1e331e, #2c462c);
+    box-shadow: 0 3px 12px rgba(76, 175, 80, 0.2);
+}
+
+.semester-tab:hover {
+    background: linear-gradient(145deg, #282828, #323232);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.semester-tab.active:hover {
+    background: linear-gradient(145deg, #1e331e, #2c462c);
+}
+
+.semester-name-input {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 0.95rem;
+    text-align: center;
+    width: 100%;
+    padding: 2px;
+    margin: 0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.semester-name-input:not([readonly]) {
+    cursor: text;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    border: 1px solid #4CAF50;
+    padding: 1px;
+    margin: -2px;
+    min-width: 80px;
+    max-width: 120px;
+}
+
+.semester-tab.active .semester-name-input {
+    color: #fff;
+}
+
+.semester-name-input:focus {
+    outline: none;
+    background-color: rgba(51, 51, 51, 0.8);
+    transform: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.25);
+}
+
+.class-tab {
+    background: linear-gradient(145deg, #292929, #2c2c2c);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    min-width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.class-tab.active {
+    background: linear-gradient(145deg, #2d2d2d, #363636);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.class-tab:hover {
+    background: linear-gradient(145deg, #323232, #3a3a3a);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.class-name-input {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 0.9rem;
+    text-align: center;
+    width: 100%;
+    padding: 2px;
+    margin: 0;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.class-name-input:not([readonly]) {
+    cursor: text;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    border: 1px solid #4CAF50;
+    padding: 1px;
+    margin: -2px;
+    min-width: 60px;
+    max-width: 100px;
+}
+
+.class-tab.active .class-name-input {
+    color: #fff;
+}
+
+.class-name-input:focus {
+    outline: none;
+    background-color: rgba(51, 51, 51, 0.8);
+    transform: none;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.25);
+}
+
+.delete-semester {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 18px;
+    height: 18px;
+    background: #181818;
+    border: none;
+    border-radius: 50%;
+    color: #333;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.semester-tab:hover .delete-semester {
+    opacity: 0.7;
+}
+
+.delete-semester:hover {
+    opacity: 1 !important;
+    color: #ff4d4d;
+    transform: scale(1.2);
+}
+
+.delete-class {
+    position: absolute;
+    bottom: -6px;
+    right: -6px;
+    width: 16px;
+    height: 16px;
+    background: #1e1e1e;
+    border: none;
+    border-radius: 50%;
+    color: #333;
+    font-size: 12px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.class-tab:hover .delete-class {
+    opacity: 0.6;
+}
+
+.delete-class:hover {
+    opacity: 1 !important;
+    color: #ff4d4d;
+    transform: scale(1.2);
+}
+
+#add-class {
+    background: linear-gradient(145deg, #262626, #2e2e2e);
+    border: none;
+    color: #888;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    padding: 0;
+    min-width: 34px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#add-class:hover {
+    background: linear-gradient(145deg, #1e331e, #2c462c);
+    color: #4CAF50;
+    transform: scale(1.1) rotate(90deg);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+}
+
+#add-semester {
+    background: linear-gradient(145deg, #262626, #2e2e2e);
+    border: none;
+    color: #888;
+    padding: 8px 16px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+#add-semester:hover {
+    background: linear-gradient(145deg, #1e331e, #2c462c);
+    color: #4CAF50;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(76, 175, 80, 0.25);
+}
+
+@media (max-width: 600px) {
+    .semester-selector, .class-selector {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    #semester-tabs, #class-tabs {
+        overflow-x: auto;
+    }
+    
+    .semester-tab, .class-tab {
+        min-width: 140px;
+    }
+}

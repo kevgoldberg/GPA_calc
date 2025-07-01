@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPA Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="gpa-styles.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="index.html" class="nav-link">Grade Calculator</a>
+        <a href="gpa-calculator.html" class="nav-link active">GPA Calculator</a>
+    </div>
+    
+    <h1>GPA Calculator</h1>
+    
+    <div class="gpa-container">
+        <div class="semester-selector-container">
+            <div class="expand-collapse-controls">
+                <button type="button" id="expand-all" class="expand-btn">Expand All</button>
+                <button type="button" id="collapse-all" class="collapse-btn">Collapse All</button>
+            </div>
+        </div>
+        
+        <table class="gpa-table pivot-table">
+            <thead>
+                <tr>
+                    <th>Semester</th>
+                    <th>Credits</th>
+                    <th>GPA</th>
+                    <th>Grade</th>
+                </tr>
+            </thead>
+            <tbody id="gpa-classes">
+                <!-- Semesters and classes will be added here dynamically -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="4">
+                        <button type="button" id="update-gpa" class="update-btn">
+                            <i class="btn-icon">↻</i>Update GPA
+                        </button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+        
+        <div class="gpa-results">
+            <div class="gpa-heading">
+                <h2 id="gpa-semester-heading">All Semesters</h2>
+            </div>
+            <div class="gpa-display">
+                <div class="gpa-section">
+                    <h3>Current GPA</h3>
+                    <div id="current-gpa" class="gpa-value">0.00</div>
+                    <div class="gpa-info-tooltip" id="current-gpa-tooltip">
+                        <i class="info-icon">?</i>
+                        <span class="tooltip-text">This is your GPA for the selected semester(s) only.</span>
+                    </div>
+                </div>
+                <div class="gpa-section">
+                    <h3>Predicted GPA</h3>
+                    <div id="predicted-gpa" class="gpa-value">0.00</div>
+                    <div class="gpa-info-tooltip" id="predicted-gpa-tooltip">
+                        <i class="info-icon">?</i>
+                        <span class="tooltip-text">This is your cumulative GPA including prior credits.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="gpa-settings">
+                <div class="setting-heading">Prior Academic Record <span class="setting-subtitle">(for cumulative calculation)</span></div>
+                <div class="settings-container">
+                    <div class="setting">
+                        <label for="prior-gpa">Prior GPA:</label>
+                        <input type="number" id="prior-gpa" min="0" max="4" step="0.01" value="0.00">
+                    </div>
+                    <div class="setting">
+                        <label for="prior-credits">Prior Credits:</label>
+                        <input type="number" id="prior-credits" min="0" step="1" value="0">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gpa-scale-container">
+            <div class="scale-header">
+                <h3>Grade Scale Customization</h3>
+                <button type="button" id="toggle-scale-settings" class="toggle-btn">Show Scale Settings</button>
+            </div>
+            <div id="scale-settings" class="scale-settings hidden">
+                <div class="grade-scale-row">
+                    <div class="grade-scale-item">
+                        <label for="scale-aplus">A+:</label>
+                        <input type="number" id="scale-aplus" class="scale-input" step="0.1" min="0" max="5" value="4.0">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-a">A:</label>
+                        <input type="number" id="scale-a" class="scale-input" step="0.1" min="0" max="5" value="4.0">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-aminus">A-:</label>
+                        <input type="number" id="scale-aminus" class="scale-input" step="0.1" min="0" max="5" value="3.7">
+                    </div>
+                </div>
+                <div class="grade-scale-row">
+                    <div class="grade-scale-item">
+                        <label for="scale-bplus">B+:</label>
+                        <input type="number" id="scale-bplus" class="scale-input" step="0.1" min="0" max="5" value="3.3">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-b">B:</label>
+                        <input type="number" id="scale-b" class="scale-input" step="0.1" min="0" max="5" value="3.0">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-bminus">B-:</label>
+                        <input type="number" id="scale-bminus" class="scale-input" step="0.1" min="0" max="5" value="2.7">
+                    </div>
+                </div>
+                <div class="grade-scale-row">
+                    <div class="grade-scale-item">
+                        <label for="scale-cplus">C+:</label>
+                        <input type="number" id="scale-cplus" class="scale-input" step="0.1" min="0" max="5" value="2.3">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-c">C:</label>
+                        <input type="number" id="scale-c" class="scale-input" step="0.1" min="0" max="5" value="2.0">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-cminus">C-:</label>
+                        <input type="number" id="scale-cminus" class="scale-input" step="0.1" min="0" max="5" value="1.7">
+                    </div>
+                </div>
+                <div class="grade-scale-row">
+                    <div class="grade-scale-item">
+                        <label for="scale-dplus">D+:</label>
+                        <input type="number" id="scale-dplus" class="scale-input" step="0.1" min="0" max="5" value="1.3">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-d">D:</label>
+                        <input type="number" id="scale-d" class="scale-input" step="0.1" min="0" max="5" value="1.0">
+                    </div>
+                    <div class="grade-scale-item">
+                        <label for="scale-dminus">D-:</label>
+                        <input type="number" id="scale-dminus" class="scale-input" step="0.1" min="0" max="5" value="0.7">
+                    </div>
+                </div>
+                <div class="grade-scale-row">
+                    <div class="grade-scale-item">
+                        <label for="scale-f">F:</label>
+                        <input type="number" id="scale-f" class="scale-input" step="0.1" min="0" max="5" value="0.0">
+                    </div>
+                </div>
+                <button id="save-scale" class="scale-save-btn">Save Scale</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="gpa-calculator.js"></script>
+</body>
+</html>

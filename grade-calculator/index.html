@@ -1,0 +1,129 @@
+<!-- Create a basic HTML page with a title "Grade Calculator" -->
+<!-- Add a form where the user can input assignment name, score, and weight -->
+<!-- Add a button to add more assignments -->
+<!-- Display the final calculated grade below -->
+
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="nav-bar">
+        <a href="index.html" class="nav-link active">Grade Calculator</a>
+        <a href="gpa-calculator.html" class="nav-link">GPA Calculator</a>
+    </div>
+    <div class="semester-manager">
+        <div class="semester-selector">
+            <button id="add-semester" aria-label="Add new semester" class="add-btn">+ New Semester</button>
+            <div id="semester-tabs">
+                <!-- Semester tabs will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+    <div class="class-manager">
+        <div class="class-selector">
+            <button id="add-class" aria-label="Add new class">+</button>
+            <div id="class-tabs">
+                <div class="class-tab active" data-class-id="class1">
+                    <input type="text" class="class-name-input" value="Class 1" spellcheck="false" readonly>
+                    <button class="delete-class" aria-label="Delete class">×</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h1>Grade Calculator</h1>
+    <form id="grade-form">
+        <div class="table-container">
+            <div class="class-header">
+                <h2 id="current-class-name">Class 1</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Assignment</th>
+                        <th>Score</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody id="assignment-rows">
+                    <tr>
+                        <td>
+                            <button class="delete-row" aria-label="Delete row">×</button>
+                            <input type="text" name="assignment-name" required>
+                        </td>
+                        <td><input type="number" name="score" required></td>
+                        <td><input type="number" name="weight" required></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="delete-row" aria-label="Delete row">×</button>
+                            <input type="text" name="assignment-name" required>
+                        </td>
+                        <td><input type="number" name="score" required></td>
+                        <td><input type="number" name="weight" required></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="delete-row" aria-label="Delete row">×</button>
+                            <input type="text" name="assignment-name" required>
+                        </td>
+                        <td><input type="number" name="score" required></td>
+                        <td><input type="number" name="weight" required></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="delete-row" aria-label="Delete row">×</button>
+                            <input type="text" name="assignment-name" required>
+                        </td>
+                        <td><input type="number" name="score" required></td>
+                        <td><input type="number" name="weight" required></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button class="delete-row" aria-label="Delete row">×</button>
+                            <input type="text" name="assignment-name" required>
+                        </td>
+                        <td><input type="number" name="score" required></td>
+                        <td><input type="number" name="weight" required></td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3">
+                            <button type="button" id="add-row" class="add-row-btn">+ Add Assignment</button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+            <div class="current-grade">
+                <span>Current Grade:</span>
+                <div id="final-grade">--.--%</div>
+            </div>
+        </div>
+    </form>
+    <div id="grade-display">
+        <div class="grade-card">
+            <div class="grade-goal-container">
+                <div class="goal-input">
+                    <label for="grade-goal">Goal Grade:</label>
+                    <input type="number" id="grade-goal" value="90" min="0" max="100">%
+                </div>
+                <div class="required-grade-section">
+                    <span>Required Grade on Last <span id="remaining-weight">--.--</span>%:</span>
+                    <div id="required-grade-output">--.--%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

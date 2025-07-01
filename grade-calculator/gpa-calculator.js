@@ -247,6 +247,36 @@ function parseTranscriptText(text) {
     localStorage.setItem('classCredits', JSON.stringify(creditsMap));
     updateGpaTable();
 }
+
+// Upload an image to OCR API and parse the returned text
+function parseTranscriptImage(file) {
+    const apiKey = document.getElementById('ocr-api-key').value.trim();
+    if (!apiKey) {
+        alert('Please enter your OCR API key.');
+        return;
+    }
+    const formData = new FormData();
+    formData.append('apikey', apiKey);
+    formData.append('language', 'eng');
+    formData.append('file', file);
+    fetch('https://api.ocr.space/parse/image', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.ParsedResults && data.ParsedResults.length > 0) {
+                const text = data.ParsedResults.map(pr => pr.ParsedText).join('\n');
+                parseTranscriptText(text);
+            } else {
+                alert('No text detected in the image.');
+            }
+        })
+        .catch(err => {
+            console.error('OCR error', err);
+            alert('Failed to process image.');
+        });
+}
 // Calculate GPA based on percentage grade using custom scale
 
 function calculateGpaValue(percentage) {
@@ -666,6 +696,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const reader = new FileReader();
         reader.onload = e => parseTranscriptText(e.target.result);
         reader.readAsText(fileInput.files[0]);
+    });
+    document.getElementById("upload-transcript-photo").addEventListener("click", () => {
+        const imgInput = document.getElementById("transcript-image-file");
+        if (!imgInput || !imgInput.files.length) return;
+        parseTranscriptImage(imgInput.files[0]);
     });
 
     // Add event listener for scale settings toggle

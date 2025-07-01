@@ -661,6 +661,66 @@ function setupEventListeners() {
     setupAddClassHandler();
 }
 
+// OCR API integration
+const OCR_API_KEY = 'K85510836888957';
+
+async function analyzeTranscriptImage(imageFile) {
+    const formData = new FormData();
+    formData.append('apikey', OCR_API_KEY);
+    formData.append('language', 'eng');
+    formData.append('isTable', 'true');
+    formData.append('file', imageFile);
+
+    const response = await fetch('https://api.ocr.space/parse/image', {
+        method: 'POST',
+        body: formData
+    });
+
+    const result = await response.json();
+    if (result.IsErroredOnProcessing) {
+        alert('OCR Error: ' + result.ErrorMessage);
+        return null;
+    }
+    return result.ParsedResults[0].ParsedText;
+}
+
+function parseTranscriptText(text) {
+    // Simple parser: looks for lines with course-like patterns and GPA-like patterns
+    // This is a starting point and can be improved for your transcript format
+    const lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+    const courses = [];
+    const gpaSections = [];
+    const courseRegex = /([A-Z]{2,}\s*\d{2,})|([A-Z][a-z]+\s+[A-Z][a-z]+)|([A-Z]{2,}\d{2,})/; // e.g. MATH 101, English Literature
+    const gpaRegex = /(GPA|Grade Point Average|Cumulative GPA)[:\s]*([0-4]\.[0-9]{1,2})/i;
+
+    lines.forEach(line => {
+        if (courseRegex.test(line)) {
+            courses.push(line);
+        } else if (gpaRegex.test(line)) {
+            const match = gpaRegex.exec(line);
+            gpaSections.push({ label: match[1], value: match[2] });
+        }
+    });
+    return { courses, gpaSections };
+}
+
+// Add OCR upload UI if not present
+function addOcrUploadUI() {
+    if (!document.getElementById('transcript-upload')) {
+        const ocrDiv = document.createElement('div');
+        ocrDiv.id = 'ocr-upload-section';
+        ocrDiv.innerHTML = `
+            <h3>Analyze Transcript Image or PDF</h3>
+            <input type="file" id="transcript-upload" accept="image/*,application/pdf">
+            <button id="analyze-transcript">Analyze Transcript</button>
+            <pre id="ocr-output" style="white-space: pre-wrap; background: #f8f8f8; padding: 10px; margin-top: 10px;"></pre>
+        `;
+        // Insert at the top of the main container or body
+        const container = document.querySelector('.gpa-container') || document.body;
+        container.insertBefore(ocrDiv, container.firstChild);
+    }
+}
+
 // Initialize grade display
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM content loaded');
@@ -703,4 +763,46 @@ document.addEventListener('DOMContentLoaded', () => {
         currentClassElement.textContent = semesters[currentSemesterId].classes[currentClassId].name;
     }
     loadClassData(currentClassId);
+    
+    // OCR transcript upload and analyze
+    const uploadInput = document.getElementById('transcript-upload');
+    const analyzeBtn = document.getElementById('analyze-transcript');
+    const output = document.getElementById('ocr-output');
+    let selectedFile = null;
+
+    if (uploadInput && analyzeBtn && output) {
+        uploadInput.addEventListener('change', (e) => {
+            selectedFile = e.target.files[0];
+        });
+
+        analyzeBtn.addEventListener('click', async () => {
+            if (!selectedFile) {
+                alert('Please select an image or PDF file.');
+                return;
+            }
+            output.textContent = 'Analyzing...';
+            analyzeBtn.disabled = true;
+            analyzeBtn.textContent = 'Loading...';
+            try {
+                const text = await analyzeTranscriptImage(selectedFile);
+                if (!text) {
+                    output.textContent = 'No text found.';
+                } else {
+                    const parsed = parseTranscriptText(text);
+                    output.textContent =
+                        '--- Raw OCR Text ---\n' + text +
+                        '\n\n--- Parsed Structure ---\n' +
+                        'Courses:\n' + (parsed.courses.length ? parsed.courses.join('\n') : 'None found') +
+                        '\n\nGPA Sections:\n' + (parsed.gpaSections.length ? parsed.gpaSections.map(g => `${g.label}: ${g.value}`).join('\n') : 'None found');
+                }
+            } catch (e) {
+                output.textContent = 'Error during OCR: ' + e.message;
+            } finally {
+                analyzeBtn.disabled = false;
+                analyzeBtn.textContent = 'Analyze Transcript';
+            }
+        });
+    }
+
+    addOcrUploadUI();
 });

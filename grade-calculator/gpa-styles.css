@@ -43,6 +43,11 @@
     flex-direction: column;
     gap: 20px;
 }
+.transcript-upload {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
 
 /* Semester selector and expand/collapse buttons */
 .semester-selector-container {

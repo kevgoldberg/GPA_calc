@@ -68,3 +68,13 @@ You can adjust these values in the GPA calculator page and the settings will per
 ---
 
 Feel free to extend the calculators with additional features or refactor the scripts into modules as the project grows.
+
+## Parsing PDF transcripts
+
+A helper script `parse_transcript.py` is provided to extract course data from PDF transcripts using the OpenAI API. Set the environment variable `OPENAI_API_KEY` with your API key and run:
+
+```bash
+python parse_transcript.py path/to/transcript.pdf
+```
+
+The script saves the parsed JSON data to `transcript_parsed.json`. Each entry contains the semester name and a list of courses with their credits and grades.

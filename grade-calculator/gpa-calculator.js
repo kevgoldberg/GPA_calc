@@ -214,7 +214,96 @@ function toggleScaleSettings() {
     }
 }
 
+// Convert letter grade to GPA value using current scale
+function gpaFromLetter(letter) {
+    const l = letter.trim().toUpperCase();
+    const map = {
+        'A+': gpaScale.aplus,
+        'A': gpaScale.a,
+        'A-': gpaScale.aminus,
+        'B+': gpaScale.bplus,
+        'B': gpaScale.b,
+        'B-': gpaScale.bminus,
+        'C+': gpaScale.cplus,
+        'C': gpaScale.c,
+        'C-': gpaScale.cminus,
+        'D+': gpaScale.dplus,
+        'D': gpaScale.d,
+        'D-': gpaScale.dminus,
+        'F': gpaScale.f
+    };
+    return map[l] !== undefined ? map[l] : 0;
+}
+
+// Save semester data to localStorage
+function saveSemestersToLocalStorage(semesters) {
+    let data = { semesters: {}, currentSemesterId: '', currentClassId: '' };
+    const raw = localStorage.getItem('gradeCalculatorData');
+    if (raw) {
+        try { data = JSON.parse(raw); } catch (e) {}
+    }
+    data.semesters = semesters;
+    localStorage.setItem('gradeCalculatorData', JSON.stringify(data));
+}
+
+// Parse transcript text lines (CSV: semester,year,course,credits,grade)
+function parseTranscriptText(text) {
+    const semesters = loadSemesterData();
+    const creditsMap = loadClassCredits();
+    text.split(/\r?\n/).forEach(line => {
+        const parts = line.split(/[,\t]/).map(p => p.trim()).filter(p => p);
+        if (parts.length < 5) return;
+        const [sem, year, course, creditsStr, gradeLetter] = parts;
+        const semName = `${sem} ${year}`;
+        let semId = Object.keys(semesters).find(id => semesters[id].name === semName);
+        if (!semId) {
+            semId = `semester${Date.now()}${Math.random().toString(36).slice(2,5)}`;
+            semesters[semId] = { name: semName, classes: {} };
+        }
+        const classId = `class${Date.now()}${Math.random().toString(36).slice(2,5)}`;
+        semesters[semId].classes[classId] = {
+            name: course,
+            assignments: [],
+            letterGrade: gradeLetter.trim().toUpperCase()
+        };
+        creditsMap[classId] = parseFloat(creditsStr) || 0;
+    });
+    saveSemestersToLocalStorage(semesters);
+    localStorage.setItem('classCredits', JSON.stringify(creditsMap));
+    updateGpaTable();
+}
+
+// Upload an image to OCR API and parse the returned text
+function parseTranscriptImage(file) {
+    const apiKey = document.getElementById('ocr-api-key').value.trim();
+    if (!apiKey) {
+        alert('Please enter your OCR API key.');
+        return;
+    }
+    const formData = new FormData();
+    formData.append('apikey', apiKey);
+    formData.append('language', 'eng');
+    formData.append('file', file);
+    fetch('https://api.ocr.space/parse/image', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.ParsedResults && data.ParsedResults.length > 0) {
+                const text = data.ParsedResults.map(pr => pr.ParsedText).join('\n');
+                parseTranscriptText(text);
+            } else {
+                alert('No text detected in the image.');
+            }
+        })
+        .catch(err => {
+            console.error('OCR error', err);
+            alert('Failed to process image.');
+        });
+}
 // Calculate GPA based on percentage grade using custom scale
+
 function calculateGpaValue(percentage) {
     if (percentage >= 97) return gpaScale.aplus;
     if (percentage >= 93) return gpaScale.a;
@@ -307,8 +396,13 @@ function calculateSemesterStats(semesterId, classes) {
     
     Object.keys(classes).forEach(classId => {
         const classData = classes[classId];
-        const grade = calculateClassGrade(classData.assignments);
-        const gpaValue = calculateGpaValue(grade);
+        let gpaValue;
+        if (classData.letterGrade) {
+            gpaValue = gpaFromLetter(classData.letterGrade);
+        } else {
+            const grade = calculateClassGrade(classData.assignments);
+            gpaValue = calculateGpaValue(grade);
+        }
         const credits = parseFloat(classCredits[classId] || '3');
         
         if (!isNaN(credits) && !isNaN(gpaValue)) {
@@ -434,16 +528,23 @@ function updateGpaTable() {
                 // Add a row for each class in the semester
                 Object.keys(classes).forEach(classId => {
                     const classData = classes[classId];
-                    const grade = calculateClassGrade(classData.assignments);
-                    const gpaValue = calculateGpaValue(grade);
-                    const letterGrade = getLetterGrade(grade);
+                    let gpaValue;
+                    let letterGrade;
+                    if (classData.letterGrade) {
+                        letterGrade = classData.letterGrade.toUpperCase();
+                        gpaValue = gpaFromLetter(letterGrade);
+                    } else {
+                        const grade = calculateClassGrade(classData.assignments);
+                        gpaValue = calculateGpaValue(grade);
+                        letterGrade = getLetterGrade(grade);
+                    }
                     const credits = classCredits[classId] || '3';
                     
                     const row = document.createElement('tr');
                     row.className = 'class-row';
                     row.dataset.classId = classId;
                     row.dataset.semesterId = semesterId;
-                    row.dataset.grade = grade;
+                    row.dataset.grade = letterGrade;
                     row.dataset.gpaValue = gpaValue;
                     row.dataset.className = classData.name;
                     
@@ -636,6 +737,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('prior-credits').addEventListener('input', () => {
         savePriorGpaData();
         calculateGpa();
+    });
+    document.getElementById("upload-transcript").addEventListener("click", () => {
+        const fileInput = document.getElementById("transcript-file");
+        if (!fileInput || !fileInput.files.length) return;
+        const reader = new FileReader();
+        reader.onload = e => parseTranscriptText(e.target.result);
+        reader.readAsText(fileInput.files[0]);
+    });
+    document.getElementById("upload-transcript-photo").addEventListener("click", () => {
+        const imgInput = document.getElementById("transcript-image-file");
+        if (!imgInput || !imgInput.files.length) return;
+        parseTranscriptImage(imgInput.files[0]);
     });
 
     // Add event listener for scale settings toggle

@@ -600,16 +600,39 @@ function setupEventListeners() {
 // Initialize grade display
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM content loaded');
-    
+
     loadFromLocalStorage();
-    
+
+    // Check if we were redirected from the GPA calculator with specific
+    // semester/class parameters
+    const redirectParamsRaw = localStorage.getItem('redirectParams');
+    if (redirectParamsRaw) {
+        try {
+            const params = JSON.parse(redirectParamsRaw);
+            if (params.currentSemesterId && semesters[params.currentSemesterId]) {
+                currentSemesterId = params.currentSemesterId;
+                if (
+                    params.currentClassId &&
+                    semesters[currentSemesterId].classes[params.currentClassId]
+                ) {
+                    currentClassId = params.currentClassId;
+                } else {
+                    currentClassId = Object.keys(semesters[currentSemesterId].classes)[0];
+                }
+            }
+        } catch (e) {
+            console.error('Error parsing redirect parameters:', e);
+        }
+        localStorage.removeItem('redirectParams');
+    }
+
     // Render semester and class tabs
     renderSemesterTabs();
     renderClassTabs();
-    
+
     // Setup event listeners
     setupEventListeners();
-    
+
     // Load current class data
     const currentClassElement = document.getElementById('current-class-name');
     if (currentClassElement && semesters[currentSemesterId]?.classes[currentClassId]) {

@@ -2,9 +2,73 @@
 console.log('Grade Calculator script loaded');
 
 // Store semester data with classes inside
+// Predefined semesters for four academic years
 let semesters = {
-    'semester1': {
-        name: 'Semester 1',
+    'freshman_fall': {
+        name: 'Freshman Fall',
+        classes: {
+            'class1': {
+                name: 'Class 1',
+                assignments: []
+            }
+        }
+    },
+    'freshman_spring': {
+        name: 'Freshman Spring',
+        classes: {
+            'class1': {
+                name: 'Class 1',
+                assignments: []
+            }
+        }
+    },
+    'sophomore_fall': {
+        name: 'Sophomore Fall',
+        classes: {
+            'class1': {
+                name: 'Class 1',
+                assignments: []
+            }
+        }
+    },
+    'sophomore_spring': {
+        name: 'Sophomore Spring',
+        classes: {
+            'class1': {
+                name: 'Class 1',
+                assignments: []
+            }
+        }
+    },
+    'junior_fall': {
+        name: 'Junior Fall',
+        classes: {
+            'class1': {
+                name: 'Class 1',
+                assignments: []
+            }
+        }
+    },
+    'junior_spring': {
+        name: 'Junior Spring',
+        classes: {
+            'class1': {
+                name: 'Class 1',
+                assignments: []
+            }
+        }
+    },
+    'senior_fall': {
+        name: 'Senior Fall',
+        classes: {
+            'class1': {
+                name: 'Class 1',
+                assignments: []
+            }
+        }
+    },
+    'senior_spring': {
+        name: 'Senior Spring',
         classes: {
             'class1': {
                 name: 'Class 1',
@@ -14,7 +78,7 @@ let semesters = {
     }
 };
 
-let currentSemesterId = 'semester1';
+let currentSemesterId = 'freshman_fall';
 let currentClassId = 'class1';
 
 // Load data from localStorage if available

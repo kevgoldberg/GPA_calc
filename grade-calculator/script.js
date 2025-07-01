@@ -764,6 +764,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     loadClassData(currentClassId);
     
+    // Ensure OCR upload UI exists before attaching listeners
+    addOcrUploadUI();
+
     // OCR transcript upload and analyze
     const uploadInput = document.getElementById('transcript-upload');
     const analyzeBtn = document.getElementById('analyze-transcript');
@@ -804,5 +807,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    addOcrUploadUI();
 });

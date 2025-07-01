@@ -32,6 +32,31 @@ let expandedSemesters = {};
 // Store current filter for selecting a semester ('all' shows all)
 let currentFilter = 'all';
 
+// Filter by academic year
+let currentYearFilter = 'all';
+const semesterYearMap = {
+    'freshman_fall': 'freshman',
+    'freshman_spring': 'freshman',
+    'sophomore_fall': 'sophomore',
+    'sophomore_spring': 'sophomore',
+    'junior_fall': 'junior',
+    'junior_spring': 'junior',
+    'senior_fall': 'senior',
+    'senior_spring': 'senior'
+};
+
+// Display semesters in a fixed academic order
+const orderedSemesters = [
+    'freshman_fall',
+    'freshman_spring',
+    'sophomore_fall',
+    'sophomore_spring',
+    'junior_fall',
+    'junior_spring',
+    'senior_fall',
+    'senior_spring'
+];
+
 // Determine letter grade from GPA
 function getLetterGradeFromGpa(gpa) {
     if (gpa >= 4.0) return 'A+';
@@ -315,8 +340,15 @@ function updateGpaTable() {
     const selectedSemesterId = currentFilter;
     const semesterHeading = document.getElementById('gpa-semester-heading');
 
-    // Update heading based on filter
-    semesterHeading.textContent = selectedSemesterId === 'all' ? 'All Semesters' : semesters[selectedSemesterId]?.name || 'Semester';
+    let headingText = '';
+    if (selectedSemesterId !== 'all') {
+        headingText = semesters[selectedSemesterId]?.name || 'Semester';
+    } else if (currentYearFilter !== 'all') {
+        headingText = `${currentYearFilter.charAt(0).toUpperCase()}${currentYearFilter.slice(1)} Year`;
+    } else {
+        headingText = 'All Semesters';
+    }
+    semesterHeading.textContent = headingText;
 
     // Clear existing rows
     gpaTableBody.innerHTML = '';
@@ -444,9 +476,14 @@ function updateGpaTable() {
     
     // Add semesters based on selected semester
     if (selectedSemesterId === 'all') {
-        // Add all semesters
-        Object.keys(semesters).forEach(semesterId => {
-            addSemesterWithClasses(semesterId);
+        // Add semesters in predefined order if they exist and match year filter
+        orderedSemesters.forEach(semId => {
+            if (
+                semesters[semId] &&
+                (currentYearFilter === 'all' || semesterYearMap[semId] === currentYearFilter)
+            ) {
+                addSemesterWithClasses(semId);
+            }
         });
     } else if (semesters[selectedSemesterId]) {
         // Add just the selected semester
@@ -579,6 +616,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         updateGpaTable();
     });
+
+    // Change year filter
+    const yearSelect = document.getElementById('year-filter');
+    if (yearSelect) {
+        yearSelect.addEventListener('change', () => {
+            currentYearFilter = yearSelect.value;
+            // Collapse semesters when changing filter
+            Object.keys(expandedSemesters).forEach(id => expandedSemesters[id] = false);
+            updateGpaTable();
+        });
+    }
     
     // Add event listeners for prior GPA and credits
     document.getElementById('prior-gpa').addEventListener('input', () => {
